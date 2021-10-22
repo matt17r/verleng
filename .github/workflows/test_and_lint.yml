@@ -8,22 +8,12 @@ on:
 
 jobs:
   test:
-    runs-on: ${{ matrix.os }}-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        os: [ubuntu, macos]
+    runs-on: ubuntu-latest
     steps:
-      - uses: actions/cache@v2
-        with:
-          path: vendor/bundle
-          key: bundle-use-ruby-${{ matrix.os }}-${{ hashFiles('**/Gemfile.lock') }}
-          restore-keys: |
-            bundle-use-ruby-${{ matrix.os }}-
-      - name: Bundle install
-        run: |
-          bundle config path vendor/bundle
-          bundle install --jobs 4 --retry 3
+      - uses: actions/checkout@v2
+      - uses: ruby/setup-ruby@477b21f02be01bcb8030d50f37cfec92bfa615b6
+      - run: bundle install
+      - run: bundle exec rails test
   lint:
     runs-on: ubuntu-latest
     steps:
