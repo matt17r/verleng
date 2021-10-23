@@ -1,4 +1,4 @@
-name: CI
+name: Test and Lint
 
 on:
   push:
@@ -7,13 +7,51 @@ on:
     branches: [ main ]
 
 jobs:
-  test:
+  build-and-test:
     runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5432:5432
+
     steps:
       - uses: actions/checkout@v2
+
       - uses: ruby/setup-ruby@v1
-      - run: bundle install
-      - run: bundle exec rails test
+        with:
+          bundler-cache: true
+
+      - name: Install psql
+        run: sudo apt-get -yqq install libpq-dev
+
+      - name: Build DB
+        env:
+          PGHOST: localhost
+          PGUSER: postgres
+          PGPASSWORD: postgres
+          RAILS_ENV: test
+        run: bin/rails db:setup
+
+      - name: Run Tests
+        env:
+          PGHOST: localhost
+          PGUSER: postgres
+          PGPASSWORD: postgres
+          RAILS_ENV: test
+        run: |
+          bundle exec rake test
+          bundle exec rake test:system
+
   lint:
     runs-on: ubuntu-latest
     steps:
