@@ -31,6 +31,9 @@ jobs:
         with:
           bundler-cache: true
 
+      - name: Yarn install
+        run: yarn --frozen-lockfile
+
       - name: Install psql
         run: sudo apt-get -yqq install libpq-dev
 
