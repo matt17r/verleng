@@ -1,0 +1,114 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one_name:
+  official_given_name: Prince
+  official_family_name:
+  preferred_given_name:
+  preferred_family_name:
+  local_given_name:
+  local_family_name:
+  other_given_names:
+  display_name:
+  formal_name:
+  sort_name:
+  additional_name_details:
+    - type: Name at Birth
+      value: Prince Rogers Nelson
+    - type: Other Names
+      value:
+        - Ƭ̵̬̊
+        - The Artist
+        - The Artist Formerly Known as Prince
+        - Camille
+        - Joey Coco
+        - The Kid
+        - Alexander Nevermind
+        - Jamie Starr
+        - Tora Tora
+        - Christopher Tracy
+  date_of_birth: 1958-06-07
+  gender: Male
+  school_email:
+  personal_email:
+  school_phone:
+  personal_phone:
+  other_contact_details:
+
+translated_name:
+  official_given_name: Zedong
+  official_family_name: Mao
+  preferred_given_name:
+  preferred_family_name:
+  local_given_name: 泽东
+  local_family_name: 毛
+  other_given_names:
+  display_name:
+  formal_name:
+  sort_name:
+  additional_name_details:
+    - type: Chinese Name - Traditional Script
+      value: 毛澤東
+    - type: Courtesy Name - Traditional Script
+      value: 潤之
+    - type: Courtesy Name - Simplified Script
+      value: 润之
+    - type: Alternate Transcription
+      value: Mao Tse-tung
+    - type: IPA Pronunciation
+      value: mǎu tsɤ̌.tʊ́ŋ
+    - type: Other Names
+      value:
+        - Chairman Mao
+  date_of_birth: 1893-12-26
+  gender: Male
+  school_email:
+  personal_email:
+  school_phone:
+  personal_phone:
+  other_contact_details:
+
+legal_name_changes:
+  official_given_name: Maria
+  official_family_name: Callas
+  preferred_given_name:
+  preferred_family_name:
+  local_given_name:
+  local_family_name:
+  other_given_names:
+  display_name:
+  formal_name:
+  sort_name:
+  additional_name_details:
+    - type: Birth Name
+      value: Sophie Cecilia Kalos
+    - type: Christened Name
+      value: Maria Anna Cecilia Sofia Kalogeropoulos
+    - type: Christened Name - Localised
+      value: Μαρία Άννα Καικιλία Σοφία Καλογεροπούλου
+  date_of_birth: 1923-12-02
+  gender: Female
+  school_email:
+  personal_email:
+  school_phone:
+  personal_phone:
+  other_contact_details:
+
+goes_by_middle_name:
+  official_given_name: Laura
+  official_family_name: Witherspoon
+  preferred_given_name: Reese
+  preferred_family_name:
+  local_given_name:
+  local_family_name:
+  other_given_names: Jeanne Reese
+  display_name:
+  formal_name:
+  sort_name:
+  additional_name_details:
+  date_of_birth: 1976-03-22
+  gender: Female
+  school_email:
+  personal_email:
+  school_phone:
+  personal_phone:
+  other_contact_details:
