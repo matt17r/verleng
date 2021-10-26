@@ -1,8 +1,16 @@
 class Person < ApplicationRecord
   validates :given_name, presence: true
 
+  def self.sorted_by_name
+    Person.all.sort_by(&:sort_name)
+  end
+
   def display_name
     super || "#{given_name} #{family_name}".strip
+  end
+
+  def email
+    school_email || personal_email
   end
 
   def family_name
