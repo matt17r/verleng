@@ -39,14 +39,4 @@ ActiveRecord::Schema.define(version: 2021_10_21_154742) do
     t.check_constraint "(official_given_name IS NOT NULL) OR (preferred_given_name IS NOT NULL)", name: "given_name_check"
   end
 
-  create_table "removes", force: :cascade do |t|
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-  end
-
-  create_table "tests", force: :cascade do |t|
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-  end
-
 end
