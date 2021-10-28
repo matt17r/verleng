@@ -1,4 +1,5 @@
 class PeopleController < ApplicationController
+  before_action :require_login
   before_action :set_person, only: %i[show destroy]
 
   def index
