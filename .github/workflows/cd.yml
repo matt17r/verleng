@@ -68,6 +68,7 @@ jobs:
         uses: amoeba/standardrb-action@v2
 
   deploy:
+    if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
     needs: [build-and-test, lint]
     runs-on: ubuntu-latest
     steps:
