@@ -46,6 +46,7 @@ gem "bootsnap", ">= 1.4.4", require: false
 # gem "image_processing", "~> 1.2"
 
 gem "haml-rails", "~> 2.0"
+gem "ohmysmtp-rails", "~> 0.1.9"
 
 group :development, :test do
   # Start debugger with binding.b [https://github.com/ruby/debug]
