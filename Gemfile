@@ -51,6 +51,7 @@ gem "ohmysmtp-rails", "~> 0.1.9"
 group :development, :test do
   # Start debugger with binding.b [https://github.com/ruby/debug]
   gem "debug", ">= 1.0.0", platforms: %i[mri mingw x64_mingw]
+  gem "dotenv-rails", "~> 2.7"
   gem "standard"
 end
 
