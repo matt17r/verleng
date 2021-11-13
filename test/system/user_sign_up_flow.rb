@@ -24,7 +24,7 @@ class UserSignUpFlowTest < ApplicationSystemTestCase
     last_email = ActionMailer::Base.deliveries.last
     parsed_email = Nokogiri::HTML(last_email.body.decoded)
     target_link = parsed_email.at("a:contains('#{I18n.t("clearance_mailer.confirm_email.link_text")}')")
-    visit hacky_way_to_fix_incorrect_port(target_link["href"])
+    visit target_link["href"]
     assert_selector "span", text: I18n.t("flashes.email_confirmed")
 
     # Log in and check (by presence of log out button)
@@ -32,12 +32,5 @@ class UserSignUpFlowTest < ApplicationSystemTestCase
     fill_in I18n.t("helpers.label.session.password"), with: password
     click_on I18n.t("helpers.submit.session.submit")
     assert_selector "button", text: "#{I18n.t("layouts.application.sign_out")}: #{email}"
-  end
-
-  private
-
-  def hacky_way_to_fix_incorrect_port(url)
-    uri = URI(url)
-    "#{root_url}#{uri.path}"
   end
 end
