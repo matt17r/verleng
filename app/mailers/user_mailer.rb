@@ -1,6 +1,4 @@
 class UserMailer < ApplicationMailer
-  default from: email_address_with_name("notification@verleng.com", "Verleng Notifications")
-
   def send_confirmation_email(user:)
     @user = user
     mail(
