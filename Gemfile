@@ -16,7 +16,7 @@ gem "puma", "~> 5.0"
 gem "jsbundling-rails", "~> 0.1.0"
 
 # Hotwire's SPA-like page accelerator [https://turbo.hotwired.dev]
-gem "turbo-rails", ">= 0.7.11"
+gem "turbo-rails", ">= 0.8.3"
 
 # Hotwire's modest JavaScript framework [https://stimulus.hotwired.dev]
 gem "stimulus-rails", ">= 0.4.0"
@@ -45,6 +45,7 @@ gem "bootsnap", ">= 1.4.4", require: false
 # Use Active Storage variants [https://guides.rubyonrails.org/active_storage_overview.html#transforming-images]
 # gem "image_processing", "~> 1.2"
 
+gem "clearance", "~> 2.5"
 gem "haml-rails", "~> 2.0"
 gem "ohmysmtp-rails", "~> 0.1.9"
 
@@ -52,7 +53,7 @@ group :development, :test do
   # Start debugger with binding.b [https://github.com/ruby/debug]
   gem "debug", ">= 1.0.0", platforms: %i[mri mingw x64_mingw]
   gem "dotenv-rails", "~> 2.7"
-  gem "standard"
+  gem "standard", require: false
 end
 
 group :development do

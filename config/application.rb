@@ -20,6 +20,6 @@ module Verleng
     # config.eager_load_paths << Rails.root.join("extras")
 
     config.action_mailer.delivery_method = :ohmysmtp
-    config.action_mailer.ohmysmtp_settings = { api_token: ENV["OHMYSMTP_API_TOKEN"] }
+    config.action_mailer.ohmysmtp_settings = {api_token: ENV["OHMYSMTP_API_TOKEN"]}
   end
 end

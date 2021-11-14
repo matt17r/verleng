@@ -1,23 +1,29 @@
 require "test_helper"
 
 class PeopleControllerTest < ActionDispatch::IntegrationTest
-  setup do
-    @person = people(:one_name)
-  end
-
   test "should get index" do
-    get people_url
+    user = users(:one)
+
+    get people_url(as: user)
+
     assert_response :success
   end
 
   test "should show person" do
-    get person_url(@person)
+    person = people(:one_name)
+    user = users(:one)
+
+    get person_url(person, as: user)
+
     assert_response :success
   end
 
   test "should destroy person" do
+    person = people(:one_name)
+    user = users(:one)
+
     assert_difference("Person.count", -1) do
-      delete person_url(@person)
+      delete person_url(person, as: user)
     end
 
     assert_redirected_to people_url

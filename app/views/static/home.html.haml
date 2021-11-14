@@ -200,6 +200,11 @@
             .text-right.flex.justify-end
               .rounded-lg.h-6.w-16.px-4.bg-gray-200.mr-2
               .rounded-lg.h-6.w-16.px-4.bg-green-400
-    .w-full.md:max-w-6xl.md:mx-auto
+    .w-full.md:max-w-6xl.md:mx-auto.md:flex.md:items-center.md:justify-between
+      - if signed_in?
+        = button_to "#{I18n.t("layouts.application.sign_out")}: #{current_user.email}", sign_out_path, method: :delete, class: "p-4 text-gray-500 hover:text-gray-600 mt-10"
+      - else
+        = link_to "#{I18n.t("layouts.application.sign_in")}", sign_in_path, class: "p-4 text-gray-500 hover:text-gray-600 mt-10"
+
       %p.text-right.p-4.text-gray-600.mt-10
         Verleng Foundation &copy; 2021
