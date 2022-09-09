@@ -31,9 +31,13 @@
                         -if sr.record_type && sr.record_type == "contact"
                           %span.text-xs.inline-block.py-1.px-2.5.leading-none.text-center.whitespace-nowrap.align-baseline.font-bold.bg-yellow-500.text-white.rounded-full
                             = sr.record_type.capitalize
-                        -if sr.student_grade.present?
-                          %span.text-xs.inline-block.py-1.px-2.5.leading-none.text-center.whitespace-nowrap.align-baseline.font-bold.bg-blue-600.text-white.rounded-full
-                            = sr.student_grade
-                        -if sr.campus.present?
-                          %span.text-xs.inline-block.py-1.px-2.5.leading-none.text-center.whitespace-nowrap.align-baseline.font-bold.bg-blue-400.text-white.rounded-full
+                        -if sr.campus && sr.campus == "PP"
+                          %span.text-xs.inline-block.py-1.px-2.5.leading-none.text-center.whitespace-nowrap.align-baseline.font-bold.bg-blue-800.text-white.rounded-full
                             = sr.campus
+                          %span.text-xs.inline-block.py-1.px-2.5.leading-none.text-center.whitespace-nowrap.align-baseline.font-bold.bg-blue-800.text-white.rounded-full
+                            = sr.student_grade
+                        -if sr.campus && sr.campus == "SR"
+                          %span.text-xs.inline-block.py-1.px-2.5.leading-none.text-center.whitespace-nowrap.align-baseline.font-bold.bg-blue-500.text-white.rounded-full
+                            = sr.campus
+                          %span.text-xs.inline-block.py-1.px-2.5.leading-none.text-center.whitespace-nowrap.align-baseline.font-bold.bg-blue-500.text-white.rounded-full
+                            = sr.student_grade

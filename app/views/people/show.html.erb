@@ -1,0 +1,187 @@
+<div class="px-3 lg:px-0 h-full">
+  <div class="container mx-auto">
+    <h1 class="text-3xl text-bold my-6 text-center">
+      <%= @person.display_name %>
+    </h1>
+  </div>
+  
+  <div class="grid md:grid-cols-2 gap-6 lg:gap-x-12">
+    
+    <div class="bg-white rounded-lg border border-gray-200 sm:rounded-md md:max-w-3xl">
+      <div class="flex items-center px-8 py-8 border-b last:border-b-0">
+        <div class="flex-1">
+          <h4 class="font-medium text-xl text-gray-700 mb-3">Personal Details</h4>
+          <% if @person.official_given_name %>
+            <h6 class="font-medium text-sm text-gray-700">Official given name</h6>
+            <div class="mb-2 text-sm leading-5 text-gray-700">
+              <%= @person.official_given_name || "Not supplied" %>
+            </div>
+          <% end %>
+          <% if @person.other_given_names %>
+            <h6 class="font-medium text-sm text-gray-700">Other given names</h6>
+            <div class="mb-2 text-sm leading-5 text-gray-700">
+              <%= @person.other_given_names || "Not supplied" %>
+            </div>
+          <% end %>
+          <% if @person.official_family_name %>
+            <h6 class="font-medium text-sm text-gray-700">Official family name or patronymic</h6>
+            <div class="mb-2 text-sm leading-5 text-gray-700">
+              <%= @person.official_family_name || "Not supplied" %>
+            </div>
+          <% end %>
+          <% if @person.preferred_given_name %>
+            <h6 class="font-medium text-sm text-gray-700">Preferred given name</h6>
+            <div class="mb-2 text-sm leading-5 text-gray-700">
+              <%= @person.preferred_given_name || "Not supplied" %>
+            </div>
+          <% end %>
+          <% if @person.preferred_family_name %>
+            <h6 class="font-medium text-sm text-gray-700">Preferred family name or patronymic</h6>
+            <div class="mb-2 text-sm leading-5 text-gray-700">
+              <%= @person.preferred_family_name || "Not supplied" %>
+            </div>
+          <% end %>
+          <% if @person.local_given_name %>
+            <h6 class="font-medium text-sm text-gray-700">Local given name</h6>
+            <div class="mb-2 text-sm leading-5 text-gray-700">
+              <%= @person.local_given_name || "Not supplied" %>
+            </div>
+          <% end %>
+          <% if @person.local_family_name %>
+            <h6 class="font-medium text-sm text-gray-700">Local family name or patronymic</h6>
+            <div class="mb-2 text-sm leading-5 text-gray-700">
+              <%= @person.local_family_name || "Not supplied" %>
+            </div>
+          <% end %>
+          <% if @person.display_name %>
+            <h6 class="font-medium text-sm text-gray-700">Display name</h6>
+            <div class="mb-2 text-sm leading-5 text-gray-700">
+              <%= @person.display_name || "Not supplied" %>
+            </div>
+          <% end %>
+          <% if @person.formal_name %>
+            <h6 class="font-medium text-sm text-gray-700">Formal name</h6>
+            <div class="mb-2 text-sm leading-5 text-gray-700">
+              <%= @person.formal_name || "Not supplied" %>
+            </div>
+          <% end %>
+          <% if @person.sort_name %>
+            <h6 class="font-medium text-sm text-gray-700">Sort name</h6>
+            <div class="mb-2 text-sm leading-5 text-gray-700">
+              <%= @person.sort_name || "Not supplied" %>
+            </div>
+          <% end %>
+          <% if @person.additional_name_details %>
+            <h5 class="font-medium text- text-gray-700">Additional name details</h5>
+            <% @person.additional_name_details.each do |h| %>
+              <div class="font-medium text-sm leading-5 text-gray-700">
+                <%= h["type"] %>
+              </div>
+              <div class="mb-2 text-sm leading-5 text-gray-700">
+                <%= h["value"].class == Array ? h["value"].join(", ") : h["value"] %>
+              </div>
+            <% end %>
+          <% end %>
+          <hr class="my-4"/>
+          <h6 class="font-medium text-sm text-gray-700">Date of birth</h6>
+          <div class="mb-2 text-sm leading-5 text-gray-700">
+            <%= @person.date_of_birth || "Not supplied" %>
+          </div>
+          <h6 class="font-medium text-sm text-gray-700">Gender</h6>
+          <div class="mb-2 text-sm leading-5 text-gray-700">
+            <%= @person.gender || "Not supplied" %>
+          </div>
+          <h6 class="font-medium text-sm text-gray-700">School email</h6>
+          <div class="mb-2 text-sm leading-5 text-gray-700">
+            <%= @person.school_email || "Not supplied" %>
+          </div>
+          <% if @person.personal_email %>
+            <h6 class="font-medium text-sm text-gray-700">Personal email</h6>
+            <div class="mb-2 text-sm leading-5 text-gray-700">
+              <%= @person.personal_email || "Not supplied" %>
+            </div>
+          <% end %>
+          <% if @person.school_phone %>
+            <h6 class="font-medium text-sm text-gray-700">School phone</h6>
+            <div class="mb-2 text-sm leading-5 text-gray-700">
+              <%= @person.school_phone || "Not supplied" %>
+            </div>
+          <% end %>
+          <% if @person.personal_phone %>
+            <h6 class="font-medium text-sm text-gray-700">Personal phone</h6>
+            <div class="mb-2 text-sm leading-5 text-gray-700">
+              <%= @person.personal_phone || "Not supplied" %>
+            </div>
+          <% end %>
+          <% if @person.other_contact_details %>
+            <h5 class="font-medium text-lg text-gray-700">Other contact details</h5>
+            <% @person.other_contact_details.each do |h| %>
+              <div class="font-medium text-sm leading-5 text-gray-700">
+                <%= h["type"] %>
+              </div>
+              <div class="mb-2 text-sm leading-5 text-gray-700">
+                <%= h["value"].class == Array ? h["value"].join(", ") : h["value"] %>
+              </div>
+            <% end %>
+          <% end %>
+        </div>
+      </div>
+    </div>
+    
+    <div class="bg-white rounded-lg border border-gray-200 sm:rounded-md md:max-w-3xl">
+      <div class="flex items-center px-8 py-8 border-b last:border-b-0">
+        <div class="flex-1">
+          <% if @person.students.length > 0 %>
+            <h4 class="font-medium text-xl text-gray-700 mb-3">Children</h4>
+            <% @person.students.each do |student| %>
+              <div class="text-indigo-600 py-1">
+                <%= link_to student.display_name, student %>
+              </div>
+            <% end %>
+          <% end %>
+          
+          <% if @person.contacts.length > 0 %>
+            <h4 class="font-medium text-xl text-gray-700 mb-3">Parents</h4>
+            <% @person.contacts.each do |contact| %>
+              <div class="text-indigo-600 py-1">
+                <%= link_to contact.display_name, contact %>
+              </div>
+            <% end %>
+          <% end %>
+          
+          <hr class="my-4"/>
+          
+          <% if @person.sis_records.student.length > 0 %>
+            <h4 class="font-medium text-xl text-gray-700 my-3">Sycamore</h4>
+            <% sis = @person.sis_records.first %>
+            
+            <% if sis.student_grade %>
+              <div class="text-gray-700 py-1">
+                <%= sis.student_grade %>
+              </div>
+            <% end %>
+            
+            <% if sis.campus %>
+              <div class="text-gray-700 py-1">
+                <%= sis.campus %>
+              </div>
+            <% end %>
+            
+            <% if sis.code %>
+              <div class="text-gray-700 py-1">
+                <%= sis.code %>
+              </div>
+            <% end %>
+            
+            <hr class="my-4"/>
+            
+          <% end %>
+          
+          <h4 class="font-medium text-xl text-gray-700 my-3">Google Groups</h4>
+          
+        </div>
+      </div>
+    </div>
+    
+  </div>
+</div>
