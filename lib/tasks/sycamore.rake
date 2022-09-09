@@ -21,23 +21,34 @@ namespace :sycamore do
     family_ids = SISRecord.distinct.pluck(:family_id)
     
     family_ids.each do |family_id|
+      print "F"
       cf = Sycamore::ContactsFetcher.call(family_id: family_id)
-      next unless cf.success?
+      print "X" && next unless cf.success?
     
       contacts = cf.payload
       contacts.each do |contact|
-        sr = SISRecord.find_or_initialize_by(record_type: "contact", sis_id: contact["ID"], family_id: contact["FamilyID"])
+        sr = SISRecord.find_or_initialize_by(record_type: "contact", sis_id: contact["ID"])
+        sr.family_id = family_id
         if sr.new_record?
           sr.person = Person.new(official_family_name: contact["LastName"], official_given_name: contact["FirstName"], personal_email: contact["Email"])
+          sr.person.save
+          sr.save
+          print "c" && next # create
         end
-        sr.save
+        
+        if sr.changed?
+          sr.save
+          print "u" && next # update
+        end
+        
+        print "." # no change
       end
     end
   end
   
   desc "Update students"
   task :update_students => :environment do
-    SISRecord.all.each do |sr|
+    SISRecord.student.each do |sr|
       print "."
       sf = Sycamore::StudentFetcher.call(sis_id: sr.sis_id)
       next unless sf.success?
@@ -52,6 +63,19 @@ namespace :sycamore do
       sr.student_grade = student["Grade"]
       sr.campus = student["Location"]
       sr.save
+    end
+  end
+  
+  desc "Link families (based on existing family_id)"
+  task :link_families => :environment do
+    SISRecord.student.each do |student|
+      puts student.person.display_name
+      parents = SISRecord.contact.where(family_id: student.family_id)
+
+      parents.each do |parent|
+        print "\t#{parent.person.display_name}"
+        puts " ✅" if FamilyRelationship.find_or_create_by(student: student.person, contact: parent.person)
+      end
     end
   end
 end
