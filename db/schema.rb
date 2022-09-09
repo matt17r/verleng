@@ -10,13 +10,23 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_09_09_132956) do
+ActiveRecord::Schema[7.0].define(version: 2022_09_09_143702) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
   # Custom types defined in this database.
   # Note that some types may not work with other database engines. Be careful if changing database.
   create_enum "sis_record_type", ["student", "staff", "contact"]
+
+  create_table "family_relationships", force: :cascade do |t|
+    t.uuid "contact_id", null: false
+    t.uuid "student_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["contact_id"], name: "index_family_relationships_on_contact_id"
+    t.index ["student_id", "contact_id"], name: "index_family_relationships_on_student_id_and_contact_id", unique: true
+    t.index ["student_id"], name: "index_family_relationships_on_student_id"
+  end
 
   create_table "people", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "official_given_name"
@@ -71,5 +81,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_09_09_132956) do
     t.index ["remember_token"], name: "index_users_on_remember_token"
   end
 
+  add_foreign_key "family_relationships", "people", column: "contact_id"
+  add_foreign_key "family_relationships", "people", column: "student_id"
   add_foreign_key "sis_records", "people"
 end

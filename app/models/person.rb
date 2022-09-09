@@ -1,4 +1,10 @@
 class Person < ApplicationRecord
+  has_many :students_family_relationships, foreign_key: 'contact_id', class_name: 'FamilyRelationship'
+  has_many :students, through: :students_family_relationships, source: :student
+  
+  has_many :contacts_family_relationships, foreign_key: 'student_id', class_name: 'FamilyRelationship'
+  has_many :contacts, through: :contacts_family_relationships, source: :contact
+  
   has_many :sis_records
   
   validates :given_name, presence: true
