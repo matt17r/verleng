@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_09_07_162352) do
+ActiveRecord::Schema[7.0].define(version: 2022_09_09_132956) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -52,6 +52,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_09_07_162352) do
     t.enum "record_type", null: false, enum_type: "sis_record_type"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "campus"
     t.index ["code"], name: "index_sis_records_on_code"
     t.index ["person_id"], name: "index_sis_records_on_person_id"
     t.check_constraint "sis_id IS NOT NULL OR code IS NOT NULL", name: "sis_identifier_check"

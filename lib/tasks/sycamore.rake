@@ -15,7 +15,7 @@ namespace :sycamore do
       sr.save
     end
   end
-end  
+  
   desc "Import all parents from Sycamore"
   task :import_parents => :environment do
     family_ids = SISRecord.distinct.pluck(:family_id)
@@ -32,6 +32,26 @@ end
         end
         sr.save
       end
+    end
+  end
+  
+  desc "Update students"
+  task :update_students => :environment do
+    SISRecord.all.each do |sr|
+      print "."
+      sf = Sycamore::StudentFetcher.call(sis_id: sr.sis_id)
+      next unless sf.success?
+    
+      student = sf.payload
+      
+      sr.person.school_email = student["Email"]
+      sr.person.date_of_birth = student["DOB"]
+      sr.person.gender = student["Gender"]
+      sr.person.save
+      
+      sr.student_grade = student["Grade"]
+      sr.campus = student["Location"]
+      sr.save
     end
   end
 end
