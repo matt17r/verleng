@@ -19,14 +19,21 @@
                     %td.px-6.py-4.whitespace-nowrap
                       = link_to person do
                         .flex.items-center
-                          .flex-shrink-0.h-10.w-10
+                          .flex-shrink-0.h-12.w-12
                             = show_avatar(person)
                           .ml-4
                             .text-sm.font-medium.text-indigo-600
                               = person.display_name
-                              - person.sis_records.each do |sr|
-                                = "(#{sr.record_type.capitalize}: #{sr.sis_identifier}, Grade #{sr.student_grade})"
                             .text-sm.text-indigo-500
                               = person.email
                     %td.px-6.py-4.whitespace-nowrap.text-right.text-sm.font-medium
-                      = link_to "View", person, class: "text-indigo-600 hover:text-indigo-900"
+                      - person.sis_records.each do |sr|
+                        -if sr.record_type && sr.record_type == "contact"
+                          %span.text-xs.inline-block.py-1.px-2.5.leading-none.text-center.whitespace-nowrap.align-baseline.font-bold.bg-yellow-500.text-white.rounded-full
+                            = sr.record_type.capitalize
+                        -if sr.student_grade.present?
+                          %span.text-xs.inline-block.py-1.px-2.5.leading-none.text-center.whitespace-nowrap.align-baseline.font-bold.bg-blue-600.text-white.rounded-full
+                            = sr.student_grade
+                        -if sr.campus.present?
+                          %span.text-xs.inline-block.py-1.px-2.5.leading-none.text-center.whitespace-nowrap.align-baseline.font-bold.bg-blue-400.text-white.rounded-full
+                            = sr.campus
