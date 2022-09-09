@@ -10,9 +10,13 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2021_10_31_032231) do
+ActiveRecord::Schema[7.0].define(version: 2022_09_07_162352) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  # Custom types defined in this database.
+  # Note that some types may not work with other database engines. Be careful if changing database.
+  create_enum "sis_record_type", ["student", "staff", "contact"]
 
   create_table "people", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "official_given_name"
@@ -38,6 +42,21 @@ ActiveRecord::Schema[7.0].define(version: 2021_10_31_032231) do
     t.check_constraint "official_given_name IS NOT NULL OR preferred_given_name IS NOT NULL", name: "given_name_check"
   end
 
+  create_table "sis_records", force: :cascade do |t|
+    t.uuid "person_id", null: false
+    t.string "sis_id"
+    t.string "code"
+    t.string "family_id"
+    t.string "family_code"
+    t.string "student_grade"
+    t.enum "record_type", null: false, enum_type: "sis_record_type"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["code"], name: "index_sis_records_on_code"
+    t.index ["person_id"], name: "index_sis_records_on_person_id"
+    t.check_constraint "sis_id IS NOT NULL OR code IS NOT NULL", name: "sis_identifier_check"
+  end
+
   create_table "users", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -51,4 +70,5 @@ ActiveRecord::Schema[7.0].define(version: 2021_10_31_032231) do
     t.index ["remember_token"], name: "index_users_on_remember_token"
   end
 
+  add_foreign_key "sis_records", "people"
 end

@@ -1,4 +1,6 @@
 class Person < ApplicationRecord
+  has_many :sis_records
+  
   validates :given_name, presence: true
 
   def self.sorted_by_name

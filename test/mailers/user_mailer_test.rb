@@ -2,7 +2,7 @@ require "test_helper"
 
 class UserMailerTest < ActionMailer::TestCase
   test "invite" do
-    email = UserMailer.send_confirmation_email(user: users(:one))
+    email = UserMailer.send_confirmation_email(user: users(:controller_test_user))
 
     # Send the email, then test that it got queued
     assert_emails 1 do

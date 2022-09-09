@@ -1,0 +1,4 @@
+valid_sis_record:
+  person: valid_person
+  code: abc123
+  record_type: student

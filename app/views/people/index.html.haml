@@ -24,6 +24,8 @@
                           .ml-4
                             .text-sm.font-medium.text-indigo-600
                               = person.display_name
+                              - person.sis_records.each do |sr|
+                                = "(#{sr.record_type.capitalize}: #{sr.sis_identifier}, Grade #{sr.student_grade})"
                             .text-sm.text-indigo-500
                               = person.email
                     %td.px-6.py-4.whitespace-nowrap.text-right.text-sm.font-medium
