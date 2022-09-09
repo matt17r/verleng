@@ -13,6 +13,7 @@ namespace :sycamore do
       sr.code = student["StudentCode"]
       sr.family_id = student["FamilyID"]
       sr.save
+      print "."
     end
   end
   
@@ -58,11 +59,18 @@ namespace :sycamore do
       sr.person.school_email = student["Email"]
       sr.person.date_of_birth = student["DOB"]
       sr.person.gender = student["Gender"]
-      sr.person.save
+      sr.person.preferred_given_name = student["NickName"] if student["NickName"].present?
+      if sr.person.changed?
+        sr.person.save
+        print "p" #person
+      end
       
       sr.student_grade = student["Grade"]
       sr.campus = student["Location"]
-      sr.save
+      if sr.changed?
+        sr.save
+        print "s" #sis
+      end
     end
   end
   
