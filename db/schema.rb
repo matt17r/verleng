@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_09_10_140327) do
+ActiveRecord::Schema[7.0].define(version: 2022_09_11_063716) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -26,6 +26,16 @@ ActiveRecord::Schema[7.0].define(version: 2022_09_10_140327) do
     t.index ["contact_id"], name: "index_family_relationships_on_contact_id"
     t.index ["student_id", "contact_id"], name: "index_family_relationships_on_student_id_and_contact_id", unique: true
     t.index ["student_id"], name: "index_family_relationships_on_student_id"
+  end
+
+  create_table "group_memberships", force: :cascade do |t|
+    t.bigint "group_id", null: false
+    t.uuid "person_id", null: false
+    t.string "type"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["group_id"], name: "index_group_memberships_on_group_id"
+    t.index ["person_id"], name: "index_group_memberships_on_person_id"
   end
 
   create_table "groups", force: :cascade do |t|
@@ -98,5 +108,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_09_10_140327) do
 
   add_foreign_key "family_relationships", "people", column: "contact_id"
   add_foreign_key "family_relationships", "people", column: "student_id"
+  add_foreign_key "group_memberships", "groups"
+  add_foreign_key "group_memberships", "people"
   add_foreign_key "sis_records", "people"
 end
