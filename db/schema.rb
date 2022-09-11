@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_09_09_143702) do
+ActiveRecord::Schema[7.0].define(version: 2022_09_10_140327) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -26,6 +26,21 @@ ActiveRecord::Schema[7.0].define(version: 2022_09_09_143702) do
     t.index ["contact_id"], name: "index_family_relationships_on_contact_id"
     t.index ["student_id", "contact_id"], name: "index_family_relationships_on_student_id_and_contact_id", unique: true
     t.index ["student_id"], name: "index_family_relationships_on_student_id"
+  end
+
+  create_table "groups", force: :cascade do |t|
+    t.string "name", null: false
+    t.string "dir_id"
+    t.string "dir_name"
+    t.string "dir_email"
+    t.string "dir_description"
+    t.string "dir_aliases", default: [], null: false, array: true
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["dir_email"], name: "index_groups_on_dir_email"
+    t.index ["dir_id"], name: "index_groups_on_dir_id", unique: true
+    t.index ["dir_name"], name: "index_groups_on_dir_name"
+    t.index ["name"], name: "index_groups_on_name"
   end
 
   create_table "people", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
