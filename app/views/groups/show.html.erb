@@ -1,0 +1,65 @@
+<div class="px-3 lg:px-0 h-full">
+  <div class="container mx-auto">
+    <h1 class="text-3xl text-bold my-6 text-center">
+      <%= @group.name %>
+    </h1>
+  </div>
+  
+  <div class="grid md:grid-cols-2 gap-6 lg:gap-x-12">
+      
+      <div class="bg-white rounded-lg border border-gray-200 sm:rounded-md md:max-w-3xl">
+        <div class="flex items-center px-8 py-8 border-b last:border-b-0">
+          <div class="flex-1">
+            <h4 class="font-medium text-xl text-gray-700 mb-3">Group Details</h4>
+            <% if @group.dir_name.present? && @group.dir_name != @group.name%>
+            <h6 class="font-medium text-sm text-gray-700">Name</h6>
+            <div class="mb-2 text-sm leading-5 text-gray-700">
+              <%= @group.name %>
+            </div>
+              <h6 class="font-medium text-sm text-gray-700">Directory Name</h6>
+              <div class="mb-2 text-sm leading-5 text-red-700">
+                ⚠️ <%= @group.dir_name %>
+              </div>
+            <% end %>
+            <% if @group.dir_description.present? %>
+              <h6 class="font-medium text-sm text-gray-700">Description</h6>
+              <div class="mb-2 text-sm leading-5 text-gray-700">
+                <%= @group.dir_description %>
+              </div>
+            <% end %>
+            <% if @group.dir_email %>
+              <h6 class="font-medium text-sm text-gray-700">Email Address</h6>
+              <div class="mb-2 text-sm leading-5 text-gray-700">
+                <%= mail_to @group.dir_email %>
+              </div>
+            <% end %>
+            <% if @group.dir_aliases.present? %>
+              <h6 class="font-medium text-sm text-gray-700">Aliases</h6>
+              <div class="mb-2 text-sm leading-5 text-gray-700">
+                <ul>
+                  <% @group.dir_aliases.each do |dir_alias| %>
+                    <li><%= dir_alias %></li>
+                  <% end %>
+                </ul>
+              </div>
+            <% end %>
+          </div>
+        </div>
+      </div>
+      
+      <div class="bg-white rounded-lg border border-gray-200 sm:rounded-md md:max-w-3xl">
+        <div class="flex items-center px-8 py-8 border-b last:border-b-0">
+          <div class="flex-1">
+            <h4 class="font-medium text-xl text-gray-700 my-3">Members</h4>  
+            <% @group.members.each do |member| %>
+              <div class="text-indigo-600 py-1">
+                <%= link_to member.display_name, member %>
+              </div>
+            <% end %>
+            
+          </div>
+        </div>
+      </div>
+      
+    </div>
+  </div>

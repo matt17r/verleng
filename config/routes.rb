@@ -3,6 +3,7 @@ Rails.application.routes.draw do
 
   get "/page/:page" => "static#show"
   resources :people, only: [:index, :show, :destroy]
+  resources :groups, only: [:index, :show]
 
   resources :passwords, controller: "clearance/passwords", only: [:create, :new]
   resource :session, controller: "clearance/sessions", only: [:create]
