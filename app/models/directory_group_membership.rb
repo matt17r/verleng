@@ -1,0 +1,2 @@
+class DirectoryGroupMembership < GroupMembership
+end
