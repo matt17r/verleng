@@ -1,12 +1,39 @@
 class PeopleController < ApplicationController
   before_action :require_login
-  before_action :set_person, only: %i[show destroy]
+  before_action :set_person, only: %i[show destroy update_groups]
 
   def index
     @people = Person.sorted_by_name
   end
 
   def show
+  end
+  
+  def update_groups
+    num_groups_created = 0
+    num_memberships_added = 0
+    ugf = Google::UserGroupsFetcher.call(email: @person.school_email)
+    unless ugf.success?
+      # Log ugf.errors to error logger
+      return head :unprocessable_entity
+    end
+    
+    if ugf.payload && ugf.payload.size > 0
+      ugf.payload.each do |g|
+        group = Group.find_or_initialize_by(dir_id: g[:id])
+        if !group.persisted?
+          group.update!(name: g[:name], dir_name: g[:name], dir_email: g[:email], dir_description: g[:description], dir_aliases: g[:aliases] || [])
+          num_groups_created += 1
+        end
+        membership = DirectoryGroupMembership.find_or_initialize_by(group: group, person: @person)
+        if !membership.persisted?
+          membership.save!
+          num_memberships_added += 1
+        end
+      end
+    end
+    
+    redirect_to @person, notice: "#{t('.groups_created', count: num_groups_created) if num_groups_created > 0} #{t('.memberships_added', count: num_memberships_added)}"
   end
 
   def destroy

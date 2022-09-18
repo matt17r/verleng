@@ -2,8 +2,12 @@ Rails.application.routes.draw do
   root to: "static#show", page: "home"
 
   get "/page/:page" => "static#show"
-  resources :people, only: [:index, :show, :destroy]
-  resources :groups, only: [:index, :show]
+  resources :people, only: [:index, :show, :destroy] do
+    get 'update_groups', on: :member
+  end
+  resources :groups, only: [:index, :show] do
+    get 'update_members', on: :member
+  end
 
   resources :passwords, controller: "clearance/passwords", only: [:create, :new]
   resource :session, controller: "clearance/sessions", only: [:create]

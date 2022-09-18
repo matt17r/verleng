@@ -176,16 +176,20 @@
             <hr class="my-4"/>
             
           <% end %>
-          
-          <% if @person.groups.length > 0 %>
-            <h4 class="font-medium text-xl text-gray-700 my-3">Google Groups</h4>
-            <% @person.groups.order(:name).each do |group| %>
-              <div class="text-indigo-600 py-1">
-                <%= link_to group.name, group %>
-              </div>
-            <% end %>
             
-          <% end %>
+          <div class="flex space-x-2 items-center">
+            <h4 class="font-medium text-xl text-gray-700 my-3">Google Groups</h4>
+            <%= link_to update_groups_person_path(@person), {class: "button h-8 inline-block px-2 pt-2.5 pb-2 bg-blue-600 text-white font-medium text-xs leading-normal uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out flex items-center"} do %>
+              <svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="download"
+                class="h-6 w-6 mr-2" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                <path stroke="none" d="M0 0h24v24H0z"/>
+                <path d="M20 11a8.1 8.1 0 0 0 -15.5 -2m-.5 -5v5h5" />
+                <path d="M4 13a8.1 8.1 0 0 0 15.5 2m.5 5v-5h-5" />
+              </svg>
+              Sync
+            <% end %>
+          </div>
+          <%= render(@person.groups.order(:name)) || render('groups/empty') %>
           
         </div>
       </div>
