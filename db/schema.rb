@@ -10,13 +10,26 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_09_11_063716) do
+ActiveRecord::Schema[7.0].define(version: 2022_09_18_125248) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
   # Custom types defined in this database.
   # Note that some types may not work with other database engines. Be careful if changing database.
   create_enum "sis_record_type", ["student", "staff", "contact"]
+
+  create_table "directory_records", force: :cascade do |t|
+    t.uuid "person_id", null: false
+    t.string "directory_id", null: false
+    t.string "email", null: false
+    t.string "email_aliases", default: [], null: false, array: true
+    t.string "org_unit", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["directory_id"], name: "index_directory_records_on_directory_id", unique: true
+    t.index ["email"], name: "index_directory_records_on_email"
+    t.index ["person_id"], name: "index_directory_records_on_person_id"
+  end
 
   create_table "family_relationships", force: :cascade do |t|
     t.uuid "contact_id", null: false
@@ -107,6 +120,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_09_11_063716) do
     t.index ["remember_token"], name: "index_users_on_remember_token"
   end
 
+  add_foreign_key "directory_records", "people"
   add_foreign_key "family_relationships", "people", column: "contact_id"
   add_foreign_key "family_relationships", "people", column: "student_id"
   add_foreign_key "group_memberships", "groups"
