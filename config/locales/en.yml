@@ -17,3 +17,6 @@ en:
       people_skipped:
         one: "One person in the group was skipped because they are missing."
         other: "There were %{count} people in the group skipped because they are missing."
+      people_created:
+        one: "One person in the group was created."
+        other: "There were %{count} people in the group created."
