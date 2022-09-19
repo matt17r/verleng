@@ -6,7 +6,7 @@ class CreateGroups < ActiveRecord::Migration[7.0]
       t.string :dir_name
       t.string :dir_email
       t.string :dir_description
-      t.string :dir_aliases, null: false, array:true, default: []
+      t.string :dir_aliases, null: false, array: true, default: []
 
       t.timestamps
     end
