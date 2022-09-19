@@ -11,7 +11,7 @@ class GroupsController < ApplicationController
   def update_members
     num_people_skipped = 0
     num_members_added = 0
-    gmf = Google::GroupMembersFetcher.call(group_email_or_id: @group.dir_email)
+    gmf = Google::GroupMembersFetcher.call(group_key: @group.dir_email)
     unless gmf.success?
       Rails.logger.error("GroupMembersFetcher failed - #{gmf.errors}")
       return redirect_to @group, alert: "Fetching of group memberships failed"

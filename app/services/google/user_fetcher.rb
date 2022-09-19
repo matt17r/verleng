@@ -1,9 +1,9 @@
 module Google # class Google::UserFetcher
   class UserFetcher < ApplicationService
-    def initialize(id:)
+    def initialize(user_key:)
       scope = [ "https://www.googleapis.com/auth/admin.directory.user.readonly" ]
       user = Rails.application.credentials.google.user
-      @url = "https://admin.googleapis.com/admin/directory/v1/users/#{id}?fields=id,primaryEmail,name,suspended,aliases,nonEditableAliases,orgUnitPath,includeInGlobalAddressList"
+      @url = "https://admin.googleapis.com/admin/directory/v1/users/#{user_key}?fields=id,primaryEmail,name,suspended,aliases,nonEditableAliases,orgUnitPath,includeInGlobalAddressList"
       
       auth = Google::Auth::ServiceAccountCredentials.make_creds(
         json_key_io: StringIO.new(Rails.application.credentials.google.credentials),

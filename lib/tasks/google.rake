@@ -23,7 +23,7 @@ namespace :google do
   desc "Import group members from Google Directory for random group, demo task"
   task :import_members => :environment do
     random_group = Group.find(Group.where.not(dir_email: nil).ids.sample)
-    gmf = Google::GroupMembersFetcher.call(group_email_or_id: random_group.dir_email)
+    gmf = Google::GroupMembersFetcher.call(group_key: random_group.dir_email)
     abort(gmf.error) unless gmf.success?
     
     if !gmf.payload || gmf.payload.size == 0
@@ -46,7 +46,7 @@ namespace :google do
   desc "Import directory record for random user, demo task"
   task :import_user => :environment do
     random_person = Person.find(Person.where.not(school_email: nil).ids.sample)
-    uf = Google::UserFetcher.call(id: random_person.school_email)
+    uf = Google::UserFetcher.call(user_key: random_person.school_email)
     abort(uf.error) unless uf.success?
     
     if !uf.payload

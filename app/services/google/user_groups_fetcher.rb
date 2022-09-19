@@ -1,6 +1,7 @@
 module Google # class Google::UserGroupsFetcher
   class UserGroupsFetcher < ApplicationService
     def initialize(email:)
+      raise ArgumentError, "Email is required" unless email.present?
       scope = [ "https://www.googleapis.com/auth/admin.directory.group",
                 "https://www.googleapis.com/auth/apps.groups.settings" ]
       user = Rails.application.credentials.google.user

@@ -38,7 +38,7 @@ class PeopleController < ApplicationController
   
   def import_from_directory
     record_changed = false
-    uf = Google::UserFetcher.call(id: @person.school_email)
+    uf = Google::UserFetcher.call(user_key: @person.school_email)
     unless uf.success?
       Rails.logger.error("UserFetcher failed - #{uf.errors}")
       return redirect_to @person, alert: "Fetching of user from directory failed"
