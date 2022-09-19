@@ -42,4 +42,25 @@ namespace :google do
       DirectoryGroupMembership.find_or_create_by(group: random_group, person: person)
     end
   end
+  
+  desc "Import directory record for random user, demo task"
+  task :import_user => :environment do
+    random_person = Person.find(Person.where.not(school_email: nil).ids.sample)
+    uf = Google::UserFetcher.call(id: random_person.school_email)
+    abort(uf.error) unless uf.success?
+    
+    if !uf.payload
+      puts "API call was a success but no data returned for #{random_person.school_email}"
+      next
+    end
+    
+    DirectoryRecord.find_or_create_by!(
+      person: random_person,
+      directory_id: uf.payload[:id],
+      email: uf.payload[:primaryEmail],
+      email_aliases: uf.payload[:aliases] || [],
+      org_unit: uf.payload[:orgUnitPath]
+    )
+    puts "Successfully imported #{random_person.school_email}"
+  end
 end
