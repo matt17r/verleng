@@ -1,6 +1,6 @@
 class PeopleController < ApplicationController
   before_action :require_login
-  before_action :set_person, only: %i[show destroy update_groups]
+  before_action :set_person, only: %i[show destroy update_groups import_from_directory]
 
   def index
     @people = Person.sorted_by_name
@@ -34,6 +34,28 @@ class PeopleController < ApplicationController
     end
     
     redirect_to @person, notice: "#{t('.groups_created', count: num_groups_created) if num_groups_created > 0} #{t('.memberships_added', count: num_memberships_added)}"
+  end
+  
+  def import_from_directory
+    record_changed = false
+    uf = Google::UserFetcher.call(id: @person.school_email)
+    unless uf.success?
+      Rails.logger.error("UserFetcher failed - #{uf.errors}")
+      return redirect_to @person, alert: "Fetching of user from directory failed"
+    end
+    
+    if uf.payload
+      directory_record = DirectoryRecord.find_or_initialize_by(person: @person, directory_id: uf.payload[:id])
+      directory_record.email = uf.payload[:primaryEmail]
+      directory_record.email_aliases = uf.payload[:aliases] || []
+      directory_record.org_unit = uf.payload[:orgUnitPath]
+      if directory_record.changed?
+        directory_record.save!
+        record_changed = true
+      end
+    end
+    
+    redirect_to @person, notice: record_changed ? "Directory record added or updated" : "No changes to directory record required"
   end
 
   def destroy

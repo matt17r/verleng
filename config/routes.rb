@@ -4,6 +4,7 @@ Rails.application.routes.draw do
   get "/page/:page" => "static#show"
   resources :people, only: [:index, :show, :destroy] do
     get 'update_groups', on: :member
+    get 'import_from_directory', on: :member
   end
   resources :groups, only: [:index, :show] do
     get 'update_members', on: :member
