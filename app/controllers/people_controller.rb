@@ -14,8 +14,8 @@ class PeopleController < ApplicationController
     num_memberships_added = 0
     ugf = Google::UserGroupsFetcher.call(email: @person.school_email)
     unless ugf.success?
-      # Log ugf.errors to error logger
-      return head :unprocessable_entity
+      Rails.logger.error("UserGroupsFetcher failed - #{ugf.errors}")
+      return redirect_to @person, alert: "Fetching of groups failed"
     end
     
     if ugf.payload && ugf.payload.size > 0
