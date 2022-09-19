@@ -3,11 +3,11 @@ module Google # class Google::GroupMembersFetcher
     def initialize(group_email_or_id:)
       scope = [ "https://www.googleapis.com/auth/admin.directory.group",
                 "https://www.googleapis.com/auth/apps.groups.settings" ]
-      user = "matthew.lindfield-seager@hope.edu.kh"
+      user = Rails.application.credentials.google.user
       @url = "https://admin.googleapis.com/admin/directory/v1/groups/#{group_email_or_id}/members?maxResults=200&fields=members(email,role,type)"
       
       auth = Google::Auth::ServiceAccountCredentials.make_creds(
-        json_key_io: StringIO.new(Rails.application.credentials.google),
+        json_key_io: StringIO.new(Rails.application.credentials.google.credentials),
         scope: scope
       )
       auth.sub = user
