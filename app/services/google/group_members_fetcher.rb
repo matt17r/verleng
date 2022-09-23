@@ -1,10 +1,9 @@
 module Google # class Google::GroupMembersFetcher
   class GroupMembersFetcher < ApplicationService
     def initialize(group_key:)
-      scope = [ "https://www.googleapis.com/auth/admin.directory.group",
-                "https://www.googleapis.com/auth/apps.groups.settings" ]
+      scope = [ "https://www.googleapis.com/auth/admin.directory.group" ]
       user = Rails.application.credentials.google.user
-      @url = "https://admin.googleapis.com/admin/directory/v1/groups/#{group_key}/members?maxResults=200&fields=members(email,role,type)"
+      @url = "https://admin.googleapis.com/admin/directory/v1/groups/#{group_key}/members?maxResults=200&fields=members(id,email,role,type)"
       
       auth = Google::Auth::ServiceAccountCredentials.make_creds(
         json_key_io: StringIO.new(Rails.application.credentials.google.credentials),
