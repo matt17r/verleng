@@ -12,5 +12,6 @@
 
 # These inflection rules are supported but not enabled by default:
 ActiveSupport::Inflector.inflections(:en) do |inflect|
-  inflect.acronym "SIS"
+  inflect.acronym "SIS" # Student Information System
+  inflect.acronym "GWD" # Google Workspace Directory (or Google Directory but GD might be offensive)
 end
