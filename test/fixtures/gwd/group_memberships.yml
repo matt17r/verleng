@@ -1,0 +1,6 @@
+valid_group_membership:
+  group: valid_group
+  email: user@example.com
+  role: member
+  member: valid_user (GWD::User)
+
