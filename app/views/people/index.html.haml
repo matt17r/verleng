@@ -27,20 +27,4 @@
                             .text-sm.text-indigo-500
                               = person.email
                     %td.px-6.py-4.whitespace-nowrap.text-right.text-sm.font-medium
-                      - person.sis_records.each do |sr|
-                        -if sr.record_type && sr.record_type == "contact"
-                          %span.text-xs.inline-block.py-1.px-2.5.leading-none.text-center.whitespace-nowrap.align-baseline.font-bold.bg-yellow-500.text-white.rounded-full
-                            = sr.record_type.capitalize
-                        -if sr.campus && sr.campus == "PP"
-                          %span.text-xs.inline-block.py-1.px-2.5.leading-none.text-center.whitespace-nowrap.align-baseline.font-bold.bg-blue-800.text-white.rounded-full
-                            = sr.campus
-                          %span.text-xs.inline-block.py-1.px-2.5.leading-none.text-center.whitespace-nowrap.align-baseline.font-bold.bg-blue-800.text-white.rounded-full
-                            = sr.student_grade
-                        -if sr.campus && sr.campus == "SR"
-                          %span.text-xs.inline-block.py-1.px-2.5.leading-none.text-center.whitespace-nowrap.align-baseline.font-bold.bg-blue-500.text-white.rounded-full
-                            = sr.campus
-                          %span.text-xs.inline-block.py-1.px-2.5.leading-none.text-center.whitespace-nowrap.align-baseline.font-bold.bg-blue-500.text-white.rounded-full
-                            = sr.student_grade
-                      - person.directory_records.each do |dr|
-                        %span.text-xs.inline-block.py-1.px-2.5.leading-none.text-center.whitespace-nowrap.align-baseline.font-bold.bg-green-500.text-white.rounded-full
-                          = dr.org_unit
+                      Placeholder

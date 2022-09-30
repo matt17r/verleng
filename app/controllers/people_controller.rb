@@ -1,6 +1,6 @@
 class PeopleController < ApplicationController
   before_action :require_login
-  before_action :set_person, only: %i[show destroy update_groups import_from_directory]
+  before_action :set_person, only: %i[show destroy]
 
   def index
     @people = Person.sorted_by_name
@@ -8,62 +8,10 @@ class PeopleController < ApplicationController
 
   def show
   end
-  
-  def update_groups
-    num_groups_created = 0
-    num_memberships_added = 0
-    ugf = Google::UserGroupsFetcher.call(email: @person.school_email)
-    unless ugf.success?
-      Rails.logger.error("UserGroupsFetcher failed - #{ugf.errors}")
-      return redirect_to @person, alert: "Fetching of groups failed"
-    end
-    
-    if ugf.payload && ugf.payload.size > 0
-      ugf.payload.each do |g|
-        group = Group.find_or_initialize_by(dir_id: g[:id])
-        if !group.persisted?
-          group.update!(name: g[:name], dir_name: g[:name], dir_email: g[:email], dir_description: g[:description], dir_aliases: g[:aliases] || [])
-          num_groups_created += 1
-        end
-        membership = DirectoryGroupMembership.find_or_initialize_by(group: group, person: @person)
-        if !membership.persisted?
-          membership.save!
-          num_memberships_added += 1
-        end
-      end
-    end
-    
-    redirect_to @person, notice: "#{t('.groups_created', count: num_groups_created) if num_groups_created > 0} #{t('.memberships_added', count: num_memberships_added)}"
-  end
-  
-  def import_from_directory
-    record_changed = false
-    uf = Google::UserFetcher.call(user_key: @person.school_email)
-    unless uf.success?
-      Rails.logger.error("UserFetcher failed - #{uf.errors}")
-      return redirect_to @person, alert: "Fetching of user from directory failed"
-    end
-    
-    if uf.payload
-      directory_record = DirectoryRecord.find_or_initialize_by(person: @person, directory_id: uf.payload[:id])
-      directory_record.email = uf.payload[:primaryEmail]
-      directory_record.email_aliases = uf.payload[:aliases] || []
-      directory_record.org_unit = uf.payload[:orgUnitPath]
-      if directory_record.changed?
-        directory_record.save!
-        record_changed = true
-      end
-    end
-    
-    redirect_to @person, notice: record_changed ? "Directory record added or updated" : "No changes to directory record required"
-  end
 
   def destroy
     @person.destroy
-    respond_to do |format|
-      format.html { redirect_to people_url, notice: "Person was successfully destroyed." }
-      format.json { head :no_content }
-    end
+    redirect_to people_url, notice: "Person was successfully destroyed."
   end
 
   private
