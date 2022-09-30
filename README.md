@@ -12,6 +12,8 @@ If you just want to try it out, head to [Verleng](https://verleng.com) and add y
 
 See `Gemfile` (in the root of this repository) for the version of Ruby and Rails Verleng uses. Once you have any prerequisites installed run `bin/setup`.
 
+Run `bin/guard` to have Guard run all tests and automatically rerun tests when related files change.
+
 To start the app, run `bin/dev`. This will use Foreman to start up the services specified in `Procfile.dev`.
 
 Once it starts up, access the service locally on http://localhost:3000.
@@ -24,9 +26,9 @@ Once it starts up, access the service locally on http://localhost:3000.
   rbenv install -l # List latest stable versions
   rbenv install <stable version>
   rbenv local <stable version> # Updates value in /.ruby-version
-  ```  
+  ```
 - Update Ruby version in Gemfile
-- Install gems into new version of Ruby  
+- Install gems into new version of Ruby
   `bundle install`
 - If you get a warning about using an older version of bundler
   `bundle update --bundler`
