@@ -1,0 +1,3 @@
+valid_contact:
+  id: some-contact-id-string
+  email: contact@example.com
