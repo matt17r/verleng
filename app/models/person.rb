@@ -1,16 +1,13 @@
 class Person < ApplicationRecord
   has_many :contacts_family_relationships, foreign_key: "student_id", class_name: "FamilyRelationship", dependent: :destroy
   has_many :contacts, through: :contacts_family_relationships, source: :contact
-  
+
   has_many :students_family_relationships, foreign_key: "contact_id", class_name: "FamilyRelationship", dependent: :destroy
   has_many :students, through: :students_family_relationships, source: :student
-  
-  has_many :group_memberships, dependent: :destroy
-  has_many :groups, through: :group_memberships
-  
-  has_many :directory_records, dependent: :destroy
-  has_many :sis_records, dependent: :destroy
-  
+
+  has_many :directory_users, class_name: "GWD::User"
+  has_many :directory_contacts, class_name: "GWD::EmailContact"
+
   validates :given_name, presence: true
 
   def self.sorted_by_name
