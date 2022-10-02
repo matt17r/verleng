@@ -51,7 +51,6 @@ gem "googleauth", "~> 1.2.0"
 
 gem "clearance", "~> 2.5"
 gem "faraday", "~> 1.8"
-gem "haml-rails", "~> 2.0"
 gem "ohmysmtp-rails", "~> 0.1.9"
 
 group :development, :test do
