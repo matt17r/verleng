@@ -1,4 +1,42 @@
 namespace :google do
+  desc "Sync profile pictures for active users (import, update and delete)"
+  task :sync_profile_images => :environment do
+    start_time = Time.now()
+    errors = []
+    users = GWD::User.active
+
+    puts "Found #{users.count} users (e for error, - for removed, . for existing, + for new/updated):"
+    users.each do |u|
+      gupf = Google::UserPhotoFetcher.call(user_key: u.id)
+      if !gupf.success? && gupf.error.message.include?(":code=>404")
+        u.update!(image: "", image_etag: "")
+        print "-"
+        next
+      end
+
+      if !gupf.success?
+        print "e"
+        errors << u.email
+        next
+      end
+
+      image_data = gupf.payload
+
+      if u.image_etag == image_data[:etag]
+        print "."
+        next
+      end
+
+      u.update!(image: "data:#{image_data[:mimeType]};base64,#{image_data[:photoData]}", image_etag: image_data[:etag])
+      print "+"
+    end
+
+    if errors.present?
+      puts "\n#{errors.count} error(s)..."
+      puts "\t#{errors.join("\n\t")}"
+    end
+  end
+
   desc "Sync GWD users (import, update and delete)"
   task :sync_users => :environment do
     start_time = Time.now()
@@ -27,8 +65,13 @@ namespace :google do
         org_unit: u[:orgUnitPath],
         deleted_at: nil
       }
+      if !user.changed?
+        user.touch
+        print "."
+        next
+      end
       user.save!
-      changes.push({"email": u[:primaryEmail]}.merge(user.saved_changes).except("etag", "updated_at"))
+      changes.push({"email": u[:primaryEmail]}.merge(user.saved_changes).except("updated_at"))
       print "+"
     end
     puts "\n\nSummary of first 10 changes:" if changes.present?
@@ -85,41 +128,48 @@ namespace :google do
   end
 
   desc "Sync members of active groups (import, update and delete)"
-  task :sync_members => :environment do
+  task :sync_members, [:ignore_warnings] => :environment do |task, args|
+    args.with_defaults(ignore_warnings: false)
+    
     start_time = Time.now()
     changes = []
 
-    GWD::Group.active.each do |random_group|
-      puts "\nProcessing: #{random_group.email}"
+    GWD::Group.active.each do |group|
+      puts "\nProcessing: #{group.email}"
 
-      ggmf = Google::GroupMembersFetcher.call(group_key: random_group.id)
+      ggmf = Google::GroupMembersFetcher.call(group_key: group.id)
       abort(ggmf.error.to_s) unless ggmf.success?
 
-      puts "Fetched #{ggmf.payload&.size || 0} current members. Comparing with #{random_group.memberships.count} stored members.\n\t. for existing\n\t+ for new/updated:"
+      puts "Fetched #{ggmf.payload&.size || 0} current members. Comparing with #{group.memberships.count} stored members.\n\t. for existing\n\t+ for new/updated:"
       ggmf.payload.each do |m|
         # First try to find a matching user or group in our system (assumes sync_users and sync_groups have both been run recently)
-        polymorphic_member = (m[:type].downcase == "user") ? GWD::User.find_by(email: m[:id]) : GWD::Group.find_by(id: m[:id])
+        polymorphic_member = (m[:type].downcase == "user") ? GWD::User.find_by(id: m[:id]) : GWD::Group.find_by(id: m[:id])
         # If we couldn't find a user or group, try to create an EmailContact (will fail validation if it's not an external address)
         polymorphic_member = GWD::EmailContact.find_or_create_by(id: m[:id], email: m[:email]) unless polymorphic_member
         abort("Can't find #{m[:type]} #{m[:email]}") if !polymorphic_member
 
-        gm = GWD::GroupMembership.find_or_create_by(group: random_group, member: polymorphic_member)
+        gm = GWD::GroupMembership.find_or_create_by(group: group, member: polymorphic_member)
         gm.attributes = {
           email: m[:email],
           role: m[:role].downcase
         }
         if gm.changed?
-          gm.save!
-          print "+"
+          if !gm.valid?
+            system(">&2 echo \"#{gm.email}:\t#{gm.errors}\"")
+            print "!"
+          else
+            gm.save!
+            print "+"
+          end
         else
           gm.touch
           print "."
         end
       end
 
-      stale_memberships = random_group.memberships.where("updated_at < ?", start_time)
+      stale_memberships = group.memberships.where("updated_at < ?", start_time)
       puts "\nFound #{stale_memberships.count} members to be deleted:"
-      abort("Aborting: Too many members to be deleted") if stale_memberships.count > 25
+      abort("Aborting: Too many members to be deleted. Run again with [ignore_warnings: true] if you wish to proceed") if stale_memberships.count > 5 && !args.ignore_warnings
       stale_memberships.each do |member|
         puts "\tRemoving \"#{member.email}\""
         member.destroy

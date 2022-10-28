@@ -1,0 +1,45 @@
+<div class="px-3 lg:px-0 h-full">
+  <div class="container mx-auto">
+    <h1 class="text-3xl text-bold my-3 text-center">
+      <%= link_to "GWD Email Contacts", gwd_email_contacts_path, {class: "text-indigo-600"} %> > <%= @gwd_email_contact.person&.display_name || @gwd_email_contact.email %>
+    </h1>
+  </div>
+
+  <div class="grid md:grid-cols-2 gap-6 lg:gap-x-12">
+
+    <div class="bg-white rounded-lg border border-gray-200 sm:rounded-md md:max-w-3xl">
+      <div class="flex items-center px-8 py-8 border-b last:border-b-0">
+        <div class="flex-1">
+          <h2 class="font-medium text-xl text-gray-700 mb-3">Directory Details</h2>
+
+          <h4 class="font-medium text-sm text-gray-700">Primary email</h4>
+          <div class="mb-2 text-sm leading-5 text-gray-700">
+            <%= @gwd_email_contact.email %>
+          </div>
+          
+          <h4 class="font-medium text-sm text-gray-700">Deleted at</h4>
+          <div class="mb-2 text-sm leading-5 text-gray-700">
+            <%= @gwd_email_contact.deleted_at %>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <div class="bg-white rounded-lg border border-gray-200 sm:rounded-md md:max-w-3xl">
+      <div class="flex items-center px-8 py-8 border-b last:border-b-0">
+        <div class="flex-1">
+
+            <h2 class="font-medium text-xl text-gray-700 mb-3">Groups</h2>
+            <% @gwd_email_contact.groups.each do |group| %>
+              <div class="text-indigo-600 py-1">
+                <%= link_to group.name, group %>
+              </div>
+            <% end %>
+
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>

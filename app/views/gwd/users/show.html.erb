@@ -1,0 +1,87 @@
+<div class="px-3 lg:px-0 h-full">
+  <div class="container mx-auto">
+    <h1 class="text-3xl text-bold my-3 text-center">
+      <%= link_to "GWD Users", gwd_users_path, {class: "text-indigo-600"} %> > <%= @gwd_user.person&.display_name || @gwd_user.full_name %>
+    </h1>
+    <% if @gwd_user.image.present? %>
+      <img src="<%= @gwd_user.image %>" class="rounded-full w-15 mx-auto my-3">
+    <% end %>
+  </div>
+
+  <div class="grid md:grid-cols-2 gap-6 lg:gap-x-12">
+
+    <div class="bg-white rounded-lg border border-gray-200 sm:rounded-md md:max-w-3xl">
+      <div class="flex items-center px-8 py-8 border-b last:border-b-0">
+        <div class="flex-1">
+          <h2 class="font-medium text-xl text-gray-700 mb-3">Directory Details</h2>
+
+          <h4 class="font-medium text-sm text-gray-700">Given name</h4>
+          <div class="mb-2 text-sm leading-5 text-gray-700">
+            <%= @gwd_user.given_name %>
+          </div>
+
+          <h4 class="font-medium text-sm text-gray-700">Family name</h4>
+          <div class="mb-2 text-sm leading-5 text-gray-700">
+            <%= @gwd_user.family_name %>
+          </div>
+
+          <h4 class="font-medium text-sm text-gray-700">Primary email</h4>
+          <div class="mb-2 text-sm leading-5 text-gray-700">
+            <%= @gwd_user.email %>
+          </div>
+
+          <h4 class="font-medium text-sm text-gray-700">Email aliases</h4>
+          <div class="mb-2 text-sm leading-5 text-gray-700">
+            <%= @gwd_user.email_aliases.join(", ").presence || "No aliases" %>
+          </div>
+
+          <h4 class="font-medium text-sm text-gray-700">Organisational unit</h4>
+          <div class="mb-2 text-sm leading-5 text-gray-700">
+            <%= @gwd_user.org_unit || "Not found" %>
+          </div>
+          
+          <hr class="my-4"/>
+          
+          <h3 class="font-medium text-xl text-gray-700 mb-3">Additional Information</h3>
+          
+          <h4 class="font-medium text-sm text-gray-700">ID</h4>
+          <div class="mb-2 text-sm leading-5 text-gray-700">
+            <%= @gwd_user.id %>
+          </div>
+          
+          <h4 class="font-medium text-sm text-gray-700">Etag</h4>
+          <div class="mb-2 text-sm leading-5 text-gray-700">
+            <%= @gwd_user.etag %>
+          </div>
+
+          <h4 class="font-medium text-sm text-gray-700">Suspended?</h4>
+          <div class="mb-2 text-sm leading-5 text-gray-700">
+            <%= @gwd_user.suspended %>
+          </div>
+          
+          <h4 class="font-medium text-sm text-gray-700">Deleted at</h4>
+          <div class="mb-2 text-sm leading-5 text-gray-700">
+            <%= @gwd_user.deleted_at %>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <div class="bg-white rounded-lg border border-gray-200 sm:rounded-md md:max-w-3xl">
+      <div class="flex items-center px-8 py-8 border-b last:border-b-0">
+        <div class="flex-1">
+
+            <h2 class="font-medium text-xl text-gray-700 mb-3">Groups</h2>
+            <% @gwd_user.groups.each do |group| %>
+              <div class="text-indigo-600 py-1">
+                <%= link_to group.name, group %>
+              </div>
+            <% end %>
+
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
