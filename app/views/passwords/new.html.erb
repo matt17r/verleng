@@ -1,0 +1,29 @@
+<div class="overflow-hidden px-3 py-10 flex justify-center min-h-screen">
+  <div class="w-full max-w-sm">
+    <h2 class="block text-gray-700 text-xl font-bold mb-2">
+      <%= t(".title") %>
+    </h2>
+    <p class="block text-gray-700 text-sm mb-2">
+      <%= t(".description") %>
+    </p>
+    <div class="password-reset" id="clearance">
+      <%= form_for :password, url: passwords_path, classs: "bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4" do |form| %>
+        <div class="mb-4 text-field">
+          <%= form.label :email, class: "block text-gray-700 text-sm font-bold mb-2" %>
+          <%= form.text_field :email, type: "email", class: "shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" %>
+        </div>
+        <div class="flex items-center justify-between">
+          <div class="submit-field">
+            <%= form.submit class: "bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" %>
+          </div>
+          <div class="other-links">
+            <%= link_to t(".sign_in"), sign_in_path, class: "inline-block align-baseline font-bold text-sm text-blue-500 hover:text-blue-800" %>
+          </div>
+        </div>
+      <% end %>
+    </div>
+    <p class="text-center text-gray-500 text-xs p-4">
+      Verleng Foundation © 2022
+    </p>
+  </div>
+</div>

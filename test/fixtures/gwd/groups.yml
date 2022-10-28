@@ -1,0 +1,5 @@
+valid_group:
+  id: some-group-id-string
+  email: group@example.com
+  etag: some-group-etag
+  name: A Valid Group

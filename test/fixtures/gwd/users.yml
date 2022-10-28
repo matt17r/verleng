@@ -1,0 +1,6 @@
+valid_user:
+  id: some-id-string
+  etag: some-etag
+  email: user@example.com
+  org_unit: Some/OU
+  suspended: false

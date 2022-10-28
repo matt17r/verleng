@@ -1,0 +1,69 @@
+<div class="px-3 lg:px-0 h-full">
+  <div class="container mx-auto my-8 px-4">
+    <div class="flex justify-between items-center mb-4">
+      <h1 class="text-3xl text-bold">Google Workspace Directory Users</h1>
+    </div>
+    <div class="flex flex-col">
+      <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+        <div class="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
+          <div class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
+            <table class="min-w-full divide-y divide-gray-200">
+              <thead class="bg-gray-50">
+                <tr>
+                  <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider" scope="col">
+                    Name
+                  </th>
+                  <th class="relative px-6 py-3" scope="col">
+                    <span class="sr-only">Actions</span>
+                  </th>
+                </tr>
+              </thead>
+              <tbody class="bg-white divide-y divide-gray-200">
+                <% @gwd_users.each do |user| %>
+                  <tr class="hover:bg-gray-100">
+                    <td class="px-6 py-4 whitespace-nowrap">
+                      <%= link_to user do %>
+                        <div class="flex items-center">
+                          <div class="flex-shrink-0 h-12 w-12">
+                            <% if user.image.present? %>
+                              <img src="<%= user.image %>" class="rounded-full w-12">
+                            <% end %>
+                          </div>
+                          <div class="ml-4">
+                            <div class="text-sm font-medium text-indigo-600">
+                              <%= user.full_name %>
+                            </div>
+                            <div class="text-sm text-indigo-500">
+                              <%= user.email %>
+                            </div>
+                          </div>
+                        </div>
+                      <% end %>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                      Placeholder
+                    </td>
+                  </tr>
+                <% end %>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!--
+<h1>Users</h1>
+
+<div id="gwd_users">
+  <% @gwd_users.each do |gwd_user| %>
+    <%= render gwd_user %>
+    <p>
+      <%= link_to "Show this user", gwd_user %>
+
+      <%= button_to "Delete this user", gwd_user, method: :delete %>
+    </p>
+  <% end %>
+</div> -->

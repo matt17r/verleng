@@ -1,9 +1,9 @@
-module Google # class Google::GroupMembersFetcher
-  class GroupMembersFetcher < ApplicationService
-    def initialize(group_key:)
-      scope = [ "https://www.googleapis.com/auth/admin.directory.group" ]
+module Google # class Google::UsersFetcher
+  class UsersFetcher < ApplicationService
+    def initialize()
+      scope = [ "https://www.googleapis.com/auth/admin.directory.user.readonly" ]
       user = Rails.application.credentials.google.user
-      @url = "https://admin.googleapis.com/admin/directory/v1/groups/#{group_key}/members?maxResults=200&fields=members(id,email,role,type),nextPageToken"
+      @url = "https://admin.googleapis.com/admin/directory/v1/users?customer=my_customer&maxResults=200&fields=users(id,etag,primaryEmail,name,suspended,emails,aliases,nonEditableAliases,orgUnitPath,includeInGlobalAddressList),nextPageToken"
 
       auth = Google::Auth::ServiceAccountCredentials.make_creds(
         json_key_io: StringIO.new(Rails.application.credentials.google.credentials),
@@ -33,7 +33,7 @@ module Google # class Google::GroupMembersFetcher
       url = next_page_token ? @url + "&pageToken=#{next_page_token}" : @url
       response = client.get(url)
       raise StandardError, response.body[:error] unless response.success?
-      @results.push(*response.body[:members])
+      @results.push(*response.body[:users])
       get_pages(client: client, next_page_token: response.body[:nextPageToken]) if response.body[:nextPageToken].present?
     end
   end

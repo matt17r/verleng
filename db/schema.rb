@@ -10,26 +10,13 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_09_18_125248) do
+ActiveRecord::Schema[7.0].define(version: 2022_10_02_094755) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
   # Custom types defined in this database.
   # Note that some types may not work with other database engines. Be careful if changing database.
-  create_enum "sis_record_type", ["student", "staff", "contact"]
-
-  create_table "directory_records", force: :cascade do |t|
-    t.uuid "person_id", null: false
-    t.string "directory_id", null: false
-    t.string "email", null: false
-    t.string "email_aliases", default: [], null: false, array: true
-    t.string "org_unit", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["directory_id"], name: "index_directory_records_on_directory_id", unique: true
-    t.index ["email"], name: "index_directory_records_on_email"
-    t.index ["person_id"], name: "index_directory_records_on_person_id"
-  end
+  create_enum "group_role", ["owner", "manager", "member"]
 
   create_table "family_relationships", force: :cascade do |t|
     t.uuid "contact_id", null: false
@@ -41,30 +28,63 @@ ActiveRecord::Schema[7.0].define(version: 2022_09_18_125248) do
     t.index ["student_id"], name: "index_family_relationships_on_student_id"
   end
 
-  create_table "group_memberships", force: :cascade do |t|
-    t.bigint "group_id", null: false
-    t.uuid "person_id", null: false
-    t.string "type", null: false
+  create_table "gwd_email_contacts", id: :string, force: :cascade do |t|
+    t.uuid "person_id"
+    t.string "email", null: false
+    t.date "deleted_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["group_id", "person_id", "type"], name: "index_group_memberships_on_group_id_and_person_id_and_type", unique: true
-    t.index ["group_id"], name: "index_group_memberships_on_group_id"
-    t.index ["person_id"], name: "index_group_memberships_on_person_id"
+    t.index ["deleted_at"], name: "index_gwd_email_contacts_on_deleted_at"
+    t.index ["email"], name: "index_gwd_email_contacts_on_email"
+    t.index ["person_id"], name: "index_gwd_email_contacts_on_person_id"
   end
 
-  create_table "groups", force: :cascade do |t|
-    t.string "name", null: false
-    t.string "dir_id"
-    t.string "dir_name"
-    t.string "dir_email"
-    t.string "dir_description"
-    t.string "dir_aliases", default: [], null: false, array: true
+  create_table "gwd_group_memberships", id: :string, force: :cascade do |t|
+    t.string "group_id", null: false
+    t.string "member_type", null: false
+    t.string "member_id", null: false
+    t.string "email", null: false
+    t.enum "role", null: false, enum_type: "group_role"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["dir_email"], name: "index_groups_on_dir_email"
-    t.index ["dir_id"], name: "index_groups_on_dir_id", unique: true
-    t.index ["dir_name"], name: "index_groups_on_dir_name"
-    t.index ["name"], name: "index_groups_on_name"
+    t.index ["group_id"], name: "index_gwd_group_memberships_on_group_id"
+    t.index ["member_type", "member_id"], name: "index_gwd_group_memberships_on_member"
+  end
+
+  create_table "gwd_groups", id: :string, force: :cascade do |t|
+    t.string "etag", null: false
+    t.string "name", null: false
+    t.string "email", null: false
+    t.string "description"
+    t.string "aliases"
+    t.date "deleted_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["deleted_at"], name: "index_gwd_groups_on_deleted_at"
+    t.index ["email"], name: "index_gwd_groups_on_email"
+    t.index ["name"], name: "index_gwd_groups_on_name"
+  end
+
+  create_table "gwd_users", id: :string, force: :cascade do |t|
+    t.uuid "person_id"
+    t.string "etag", null: false
+    t.string "given_name"
+    t.string "family_name"
+    t.string "full_name"
+    t.string "email", null: false
+    t.string "email_aliases", default: [], null: false, array: true
+    t.string "org_unit", null: false
+    t.boolean "suspended", null: false
+    t.date "deleted_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "image"
+    t.string "image_etag"
+    t.index ["deleted_at"], name: "index_gwd_users_on_deleted_at"
+    t.index ["email"], name: "index_gwd_users_on_email"
+    t.index ["org_unit"], name: "index_gwd_users_on_org_unit"
+    t.index ["person_id"], name: "index_gwd_users_on_person_id"
+    t.index ["suspended"], name: "index_gwd_users_on_suspended"
   end
 
   create_table "people", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -91,22 +111,6 @@ ActiveRecord::Schema[7.0].define(version: 2022_09_18_125248) do
     t.check_constraint "official_given_name IS NOT NULL OR preferred_given_name IS NOT NULL", name: "given_name_check"
   end
 
-  create_table "sis_records", force: :cascade do |t|
-    t.uuid "person_id", null: false
-    t.string "sis_id"
-    t.string "code"
-    t.string "family_id"
-    t.string "family_code"
-    t.string "student_grade"
-    t.enum "record_type", null: false, enum_type: "sis_record_type"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.string "campus"
-    t.index ["code"], name: "index_sis_records_on_code"
-    t.index ["person_id"], name: "index_sis_records_on_person_id"
-    t.check_constraint "sis_id IS NOT NULL OR code IS NOT NULL", name: "sis_identifier_check"
-  end
-
   create_table "users", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -120,10 +124,8 @@ ActiveRecord::Schema[7.0].define(version: 2022_09_18_125248) do
     t.index ["remember_token"], name: "index_users_on_remember_token"
   end
 
-  add_foreign_key "directory_records", "people"
   add_foreign_key "family_relationships", "people", column: "contact_id"
   add_foreign_key "family_relationships", "people", column: "student_id"
-  add_foreign_key "group_memberships", "groups"
-  add_foreign_key "group_memberships", "people"
-  add_foreign_key "sis_records", "people"
+  add_foreign_key "gwd_email_contacts", "people"
+  add_foreign_key "gwd_users", "people"
 end

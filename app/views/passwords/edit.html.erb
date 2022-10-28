@@ -1,0 +1,23 @@
+<div class="overflow-hidden px-3 py-10 flex justify-center min-h-screen">
+  <div class="w-full max-w-sm">
+    <h2 class="block text-gray-700 text-xl font-bold mb-2">
+      <%= t(".title") %>
+    </h2>
+    <p class="block text-gray-700 text-sm mb-2">
+      <%= t(".description") %>
+    </p>
+    <div class="password-reset" id="clearance"></div>
+    <%= form_for :password_reset, url: [@user, :password, token: @user.confirmation_token], html: { method: :put }, class: "bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4" do |form| %>
+      <div class="mb-4 password-field">
+        <%= form.label :password, class: "block text-gray-700 text-sm font-bold mb-2" %>
+        <%= form.password_field :password, class: "shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" %>
+      </div>
+      <div class="submit-field">
+        <%= form.submit class: "bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" %>
+      </div>
+    <% end %>
+    <p class="text-center text-gray-500 text-xs p-4">
+      Verleng Foundation © 2022
+    </p>
+  </div>
+</div>

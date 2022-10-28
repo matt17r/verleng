@@ -24,9 +24,6 @@ gem "stimulus-rails", ">= 0.4.0"
 # Bundle and process CSS [https://github.com/rails/cssbundling-rails]
 gem "cssbundling-rails", ">= 0.1.0"
 
-# Build JSON APIs with ease [https://github.com/rails/jbuilder]
-gem "jbuilder", "~> 2.7"
-
 # Use Redis adapter to run Action Cable in production
 gem "redis", "~> 4.0"
 
@@ -51,7 +48,6 @@ gem "googleauth", "~> 1.2.0"
 
 gem "clearance", "~> 2.5"
 gem "faraday", "~> 1.8"
-gem "haml-rails", "~> 2.0"
 gem "ohmysmtp-rails", "~> 0.1.9"
 
 group :development, :test do
@@ -63,10 +59,11 @@ end
 
 group :development do
   gem "foreman"
-
+  gem "guard"
+  gem "guard-minitest"
   # Add speed badges [https://github.com/MiniProfiler/rack-mini-profiler]
   # gem "rack-mini-profiler", ">= 2.3.3"
-
+  gem "terminal-notifier-guard"
   # Use console on exceptions pages [https://github.com/rails/web-console]
   gem "web-console", ">= 4.1.0"
 end
@@ -74,6 +71,7 @@ end
 group :test do
   # Use system testing [https://guides.rubyonrails.org/testing.html#system-testing]
   gem "capybara", ">= 3.26"
+  gem "minitest-reporters"
   gem "selenium-webdriver"
   gem "webdrivers"
 end

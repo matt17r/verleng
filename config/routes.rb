@@ -18,6 +18,12 @@ Rails.application.routes.draw do
       controller: "clearance/passwords",
       only: [:edit, :update]
   end
+  
+  namespace :gwd do
+    resources :users
+    resources :groups
+    resources :email_contacts
+  end
 
   get "/sign_in" => "clearance/sessions#new", :as => "sign_in"
   # Override SessionsController to change URL after sign out on #destroy

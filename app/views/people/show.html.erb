@@ -4,9 +4,9 @@
       <%= link_to "People", people_path, {class: "text-indigo-600"} %> > <%= @person.display_name %>
     </h1>
   </div>
-  
+
   <div class="grid md:grid-cols-2 gap-6 lg:gap-x-12">
-    
+
     <div class="bg-white rounded-lg border border-gray-200 sm:rounded-md md:max-w-3xl">
       <div class="flex items-center px-8 py-8 border-b last:border-b-0">
         <div class="flex-1">
@@ -127,7 +127,7 @@
         </div>
       </div>
     </div>
-    
+
     <div class="bg-white rounded-lg border border-gray-200 sm:rounded-md md:max-w-3xl">
       <div class="flex items-center px-8 py-8 border-b last:border-b-0">
         <div class="flex-1">
@@ -140,7 +140,7 @@
             <% end %>
             <hr class="my-4"/>
           <% end %>
-          
+
           <% if @person.contacts.length > 0 %>
             <h4 class="font-medium text-xl text-gray-700 mb-3">Parents</h4>
             <% @person.contacts.each do |contact| %>
@@ -150,94 +150,10 @@
             <% end %>
             <hr class="my-4"/>
           <% end %>
-          
-          <% if @person.sis_records.student.length > 0 %>
-            <h4 class="font-medium text-xl text-gray-700 mb-3">Sycamore</h4>
-            <% sis = @person.sis_records.first %>
-            
-            <% if sis.code %>
-              <h6 class="font-medium text-sm text-gray-700">Code</h6>
-              <div class="mb-2 text-sm leading-5 text-gray-700">
-                <%= sis.code %>
-              </div>
-            <% end %>
-            
-            <% if sis.student_grade %>
-              <h6 class="font-medium text-sm text-gray-700">Grade</h6>
-              <div class="mb-2 text-sm leading-5 text-gray-700">
-                <%= sis.student_grade %>
-              </div>
-            <% end %>
-            
-            <% if sis.campus %>
-              <h6 class="font-medium text-sm text-gray-700">Campus</h6>
-              <div class="mb-2 text-sm leading-5 text-gray-700">
-                <%= sis.campus %>
-              </div>
-            <% end %>
-            
-            <hr class="my-4"/>
-          <% end %>
-          
-          <% if @person.directory_records.length > 0 || @person.sis_records.student.length > 0 %>
-            <div class="flex space-x-2 items-center">
-              <h4 class="font-medium text-xl text-gray-700 my-3">Google Directory</h4>
-              <%= link_to import_from_directory_person_path(@person), {class: "button h-8 inline-block px-2 pt-2.5 pb-2 bg-blue-600 text-white font-medium text-xs leading-normal uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out flex items-center"} do %>
-                <svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="download"
-                  class="h-6 w-6 mr-2" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                  <path stroke="none" d="M0 0h24v24H0z"/>
-                  <path d="M20 11a8.1 8.1 0 0 0 -15.5 -2m-.5 -5v5h5" />
-                  <path d="M4 13a8.1 8.1 0 0 0 15.5 2m.5 5v-5h-5" />
-                </svg>
-                Sync
-              <% end %>
-            </div>
-            
-            <% @person.directory_records.each do |dr| %>
-              <h6 class="font-medium text-sm text-gray-700">ID</h6>
-              <div class="mb-2 text-sm leading-5 text-gray-700">
-                <%= dr.directory_id %>
-              </div>
-              
-              <h6 class="font-medium text-sm text-gray-700">Email</h6>
-              <div class="mb-2 text-sm leading-5 text-gray-700">
-                <%= dr.email %>
-              </div>
-              
-              <% if dr.email_aliases.present? %>
-                <ul class="text-gray-700 py-1">
-                  <% dr.email_aliases.each do |email_alias| %>
-                    <li><%= email_alias %></li>
-                  <% end %>
-                </ul>
-              <% end %>
-              
-              <h6 class="font-medium text-sm text-gray-700">Org Unit</h6>
-              <div class="mb-2 text-sm leading-5 text-gray-700">
-                <%= dr.org_unit %>
-              </div>
-            <% end %>
-            
-            <hr class="my-4"/>
-          <% end %>
-            
-          <div class="flex space-x-2 items-center">
-            <h4 class="font-medium text-xl text-gray-700 my-3">Google Groups</h4>
-            <%= link_to update_groups_person_path(@person), {class: "button h-8 inline-block px-2 pt-2.5 pb-2 bg-blue-600 text-white font-medium text-xs leading-normal uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out flex items-center"} do %>
-              <svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="download"
-                class="h-6 w-6 mr-2" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                <path stroke="none" d="M0 0h24v24H0z"/>
-                <path d="M20 11a8.1 8.1 0 0 0 -15.5 -2m-.5 -5v5h5" />
-                <path d="M4 13a8.1 8.1 0 0 0 15.5 2m.5 5v-5h-5" />
-              </svg>
-              Sync
-            <% end %>
-          </div>
-          <%= render(@person.groups.order(:name)) || render('groups/empty') %>
-          
+
         </div>
       </div>
     </div>
-    
+
   </div>
 </div>
