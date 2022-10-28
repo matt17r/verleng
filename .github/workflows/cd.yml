@@ -47,6 +47,10 @@ jobs:
           PGPASSWORD: postgres
           RAILS_ENV: test
         run: bin/rails db:setup
+          
+      - name: Rails test
+        env:
+          RAILS_MASTER_KEY: ${{ secrets.RAILS_MASTER_KEY }}
 
       - name: Run Tests
         env:
