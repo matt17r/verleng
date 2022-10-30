@@ -7,6 +7,8 @@ class Person < ApplicationRecord
 
   has_many :directory_users, class_name: "GWD::User"
   has_many :directory_contacts, class_name: "GWD::EmailContact"
+  
+  has_many :sis_students, class_name: "Sycamore::Student"
 
   validates :given_name, presence: true
 
