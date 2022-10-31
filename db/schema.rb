@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_10_30_122113) do
+ActiveRecord::Schema[7.0].define(version: 2022_10_31_090541) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -111,6 +111,29 @@ ActiveRecord::Schema[7.0].define(version: 2022_10_30_122113) do
     t.check_constraint "official_given_name IS NOT NULL OR preferred_given_name IS NOT NULL", name: "given_name_check"
   end
 
+  create_table "sycamore_contacts", force: :cascade do |t|
+    t.uuid "person_id"
+    t.integer "family_id"
+    t.string "family_role"
+    t.string "given_name"
+    t.string "family_name"
+    t.string "email"
+    t.string "mobile_phone"
+    t.string "work_phone"
+    t.string "home_phone"
+    t.boolean "primary_parent"
+    t.boolean "authorised_pickup"
+    t.boolean "emergency_contact"
+    t.datetime "deleted_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["email"], name: "index_sycamore_contacts_on_email"
+    t.index ["family_name"], name: "index_sycamore_contacts_on_family_name"
+    t.index ["given_name"], name: "index_sycamore_contacts_on_given_name"
+    t.index ["mobile_phone"], name: "index_sycamore_contacts_on_mobile_phone"
+    t.index ["person_id"], name: "index_sycamore_contacts_on_person_id"
+  end
+
   create_table "sycamore_students", force: :cascade do |t|
     t.uuid "person_id"
     t.string "code", null: false
@@ -157,5 +180,6 @@ ActiveRecord::Schema[7.0].define(version: 2022_10_30_122113) do
   add_foreign_key "family_relationships", "people", column: "student_id"
   add_foreign_key "gwd_email_contacts", "people"
   add_foreign_key "gwd_users", "people"
+  add_foreign_key "sycamore_contacts", "people"
   add_foreign_key "sycamore_students", "people"
 end
