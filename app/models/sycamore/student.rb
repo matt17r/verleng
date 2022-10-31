@@ -1,6 +1,5 @@
 module Sycamore # class Sycamore::Student
   class Student < ApplicationRecord
-    # self.table_name = "sycamore_students"
     scope :active, -> { where(deleted_at: nil) }
     scope :deleted, -> { where.not(deleted_at: nil) }
 
