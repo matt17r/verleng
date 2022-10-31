@@ -1,6 +1,6 @@
 require "test_helper"
 
-class EmailContactTest < ActiveSupport::TestCase
+class GWD::EmailContactTest < ActiveSupport::TestCase
   test "can create a valid contact" do
     contact = GWD::EmailContact.new(id: "Contact ID", email: "contact@example.com")
 

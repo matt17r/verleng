@@ -1,6 +1,6 @@
 require "test_helper"
 
-class GroupTest < ActiveSupport::TestCase
+class GWD::GroupTest < ActiveSupport::TestCase
   test "can create a valid group" do
     group = GWD::Group.new(id: "Group ID", etag: "Group etag", email: "Group email", name: "Group name")
 

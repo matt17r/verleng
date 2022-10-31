@@ -1,6 +1,6 @@
 require "test_helper"
 
-class GroupMembershipTest < ActiveSupport::TestCase
+class GWD::GroupMembershipTest < ActiveSupport::TestCase
   test "can create a valid user group membership" do
     group = gwd_groups(:valid_group)
     user = gwd_users(:valid_user)

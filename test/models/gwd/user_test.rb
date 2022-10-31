@@ -1,6 +1,6 @@
 require "test_helper"
 
-class UserTest < ActiveSupport::TestCase
+class GWD::UserTest < ActiveSupport::TestCase
   test "can create a valid user" do
     user = GWD::User.new(id: "Sample ID", etag: "Sample etag", email: "Sample email", org_unit: "Sample/OU", suspended: false, email_aliases: [])
 
