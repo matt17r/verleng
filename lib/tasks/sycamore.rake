@@ -66,7 +66,8 @@ namespace :sycamore do
   end
 
   desc "Sync all contacts with Sycamore"
-  task :sync_contacts => :environment do
+  task :sync_contacts, [:no_safety_check] => :environment do |task, args|
+    args.with_defaults(no_safety_check: false)
     start_time = Time.now()
     changes = []
     errors = []

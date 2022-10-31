@@ -1,7 +1,6 @@
 namespace :google do
   desc "Sync profile pictures for active users (import, update and delete)"
   task :sync_profile_images => :environment do
-    start_time = Time.now()
     errors = []
     users = GWD::User.active
 
@@ -74,8 +73,7 @@ namespace :google do
       changes.push({"email": u[:primaryEmail]}.merge(user.saved_changes).except("updated_at"))
       print "+"
     end
-    puts "\n\nSummary of first 10 changes:" if changes.present?
-    puts changes.first(10).join("\n")
+    puts "\n\nSummary of first 10 changes:\n#{changes.first(10).join("\n")}" if changes.present?
 
     stale_users = GWD::User.active.where("updated_at < ?", start_time)
     puts "\nFound #{stale_users.count} users to be deleted"
@@ -128,11 +126,12 @@ namespace :google do
   end
 
   desc "Sync members of active groups (import, update and delete)"
-  task :sync_members, [:ignore_warnings] => :environment do |task, args|
-    args.with_defaults(ignore_warnings: false)
-    
+  task :sync_members, [:no_safety_check] => :environment do |task, args|
+    args.with_defaults(no_safety_check: false)
+
     start_time = Time.now()
     changes = []
+    skipped_groups = []
 
     GWD::Group.active.each do |group|
       puts "\nProcessing: #{group.email}"
@@ -168,12 +167,24 @@ namespace :google do
       end
 
       stale_memberships = group.memberships.where("updated_at < ?", start_time)
+      too_many_deletions = (stale_memberships.count > 5 && !args.no_safety_check)
+
       puts "\nFound #{stale_memberships.count} members to be deleted:"
-      abort("Aborting: Too many members to be deleted. Run again with [ignore_warnings: true] if you wish to proceed") if stale_memberships.count > 5 && !args.ignore_warnings
+
+      if too_many_deletions
+        puts "\tSkipping, too many members to be deleted."
+        skipped_groups << group
+        next
+      end
+
       stale_memberships.each do |member|
         puts "\tRemoving \"#{member.email}\""
         member.destroy
       end
+    end
+
+    if skipped_groups.count > 0
+      puts "Skipped #{skipped_groups.count} with several members to be deleted. Run again with [no_safety_check: true] to process those groups too"
     end
   end
 end
