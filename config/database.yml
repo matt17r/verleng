@@ -82,5 +82,6 @@ test:
 production:
   <<: *default
   database: verleng_production
+  host: localhost
   username: verleng
   password: <%= ENV["VERLENG_DATABASE_PASSWORD"] %>
