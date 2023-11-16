@@ -65,10 +65,8 @@ group :development do
   gem "foreman"
   gem "guard"
   gem "guard-minitest"
-  # Add speed badges [https://github.com/MiniProfiler/rack-mini-profiler]
-  # gem "rack-mini-profiler", ">= 2.3.3"
+  gem "rack-mini-profiler", ">= 2.3.3"
   gem "terminal-notifier-guard"
-  # Use console on exceptions pages [https://github.com/rails/web-console]
   gem "web-console", ">= 4.1.0"
 end
 
